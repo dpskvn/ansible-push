@@ -1,0 +1,156 @@
+{
+  "name": "Ansible Automation Platform",
+  "description": "Use AAP or AWX instances to deploy certificates.",
+  "pluginType": "MACHINE",
+  "domainSchema": {
+    "connection": {
+      "properties": {
+        "aapUrl": {
+          "type": "string",
+          "x-labelLocalizationKey": "address.label",
+          "x-rank": 0
+        },
+        "connectionType": {
+          "oneOf": [
+            {
+              "const": "http",
+              "x-labelLocalizationKey": "connectionType.http"
+            },
+            {
+              "const": "https",
+              "x-labelLocalizationKey": "connectionType.https"
+            }
+          ],
+          "x-labelLocalizationKey": "connectionType.label",
+          "x-rank": 1
+        },
+        "username": {
+          "type": "string",
+          "x-encrypted": true,
+          "x-labelLocalizationKey": "username.label",
+          "x-rank": 2
+        },
+        "password": {
+          "type": "string",
+          "x-controlOptions": {
+            "password": true,
+            "showPasswordLabel": "password.showPassword",
+            "hidePasswordLabel": "password.hidePassword"
+          },
+          "x-encrypted": true,
+          "x-labelLocalizationKey": "password.label",
+          "x-rank": 3
+        }
+      },
+      "required": ["aapUrl", "connectionType", "username", "password"],
+      "type": "object"
+    },
+    "certificateBundle": {
+      "properties": {
+        "certificate": {
+          "contentEncoding": "base64",
+          "type": "string"
+        },
+        "certificateChain": {
+          "contentEncoding": "base64",
+          "type": "string"
+        },
+        "privateKey": {
+          "contentEncoding": "base64",
+          "type": "string",
+          "x-encrypted-base64": true
+        }
+      },
+      "required": ["certificate", "privateKey", "certificateChain"],
+      "type": "object"
+    },
+    "keystore": {
+      "properties": {
+        "jobId": {
+          "type": "integer",
+          "x-labelLocalizationKey": "jobId.label",
+          "x-rank": 0
+        },
+        "certificateName": {
+          "description": "certificateName.description",
+          "type": "string",
+          "x-labelLocalizationKey": "certificateName.label",
+          "x-rank": 1
+        },
+        "chainName": {
+          "type": "string",
+          "x-labelLocalizationKey": "chainName.label",
+          "x-rank": 2
+        },
+        "certificatePath": {
+          "description": "certificatePath.description",
+          "type": "string",
+          "x-labelLocalizationKey": "certificatePath.label",
+          "x-rank": 3
+        }
+      },
+      "required": ["jobId"],
+      "type": "object",
+      "x-labelLocalizationKey": "keystore.label",
+      "x-primaryKey": ["#/certificateName"]
+    },
+    "binding": {
+      "properties": {},
+      "required": [],
+      "type": "object",
+      "x-labelLocalizationKey": "binding.label"
+    }
+  },
+  "localizationResources": {
+    "en": {
+      "address": {
+        "label": "AAP Url"
+      },
+      "connectionType": {
+        "label": "Connection type",
+        "http": "HTTP",
+        "https": "HTTPS"
+      },
+      "username": {
+        "label": "Username"
+      },
+      "password": {
+        "label": "Password",
+        "showPassword": "Show Password",
+        "hidePassword": "Hide Password"
+      },
+      "keystore": {
+        "label": "Certificate Information"
+      },
+      "binding": {
+        "label": "Server Store Details"
+      },
+      "certificateName": {
+        "description": "How the certificate should appear on the server",
+        "label": "Certificate Name"
+      },
+      "chainName": {
+        "label": "Chain Bundle Name"
+      },
+      "certificatePath": {
+        "description": "Can be skipped if the playbook is pre-configured",
+        "label": "Certificate Path"
+      },
+      "jobId": {
+        "label": "AAP Job ID"
+      },
+      "serverName": {
+        "description": "An alternative DNS name used for Server Name Indication",
+        "label": "SNI"
+      }
+    }
+  },
+  "hooks": {
+    "mapping": {
+      "configureInstallationEndpoint": "/v1/configureinstallationendpoint",
+      "installCertificateBundle": "/v1/installcertificatebundle",
+      "testConnection": "/v1/testconnection"
+    },
+    "requestConverters": ["arguments-decrypter"]
+  }
+}

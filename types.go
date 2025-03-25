@@ -45,9 +45,8 @@ type CertificateBundle struct {
 }
 
 type Keystore struct {
-	Partition       string `json:"partition"`
 	CertificateName string `json:"certificateName"`
-	ChainName       string `json:"chainName"`
+	JobId           int    `json:"jobId"`
 }
 
 type Binding struct {
@@ -104,4 +103,36 @@ type CertificateInstallation struct {
 type MachineIdentity struct {
 	Keystore Keystore `json:"keystore"`
 	Binding  Binding  `json:"binding"`
+}
+
+type CertificateBundlePayload struct {
+	CertificateBundle struct {
+		Certificate      string   `json:"certificate"`
+		CertificateChain []string `json:"certificateChain"`
+		PrivateKey       string   `json:"privateKey"`
+	} `json:"certificateBundle"`
+	Connection struct {
+		AapUrl         string `json:"aapUrl"`
+		ConnectionType string `json:"connectionType"`
+		Username       string `json:"username"`
+		Password       string `json:"password"`
+	} `json:"connection"`
+	Keystore struct {
+		CertificateName string `json:"certificateName"`
+		JobId           int    `json:"jobId"`
+	} `json:"keystore"`
+}
+
+// AAP job launch request
+type JobLaunchRequest struct {
+	ExtraVars map[string]interface{} `json:"extra_vars"`
+}
+
+type ConnectionTestPayload struct {
+	Connection struct {
+		AapUrl         string `json:"aapUrl"`
+		ConnectionType string `json:"connectionType"`
+		Username       string `json:"username"`
+		Password       string `json:"password"`
+	} `json:"connection"`
 }

@@ -29,7 +29,7 @@ Certificates are passed as extra variables to the job. As AAP doesn't support ar
 ## TODO
 - [x] Implement a basic PoC
 - [x] Create a basic `manifest.json`
-- [ ] Clean up unnecessary types
-- [ ] Figure out how to handle `installcertificatebundle` vs `configureinstallationendpoint`
-- [ ] Remove certificate discovery as it doesn't make sense Ansible-wise
-- [ ] Finalize the parameters in `manifest.json`
+- [x] Clean up unnecessary types
+- [x] Figure out how to handle `installcertificatebundle` vs `configureinstallationendpoint`
+- [x] Remove certificate discovery as it doesn't make sense Ansible-wise
+- [x] Finalize the parameters in `manifest.json`

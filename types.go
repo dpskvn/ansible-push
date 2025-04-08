@@ -6,36 +6,11 @@ They are kept here to provide example and contract between manifest and backend.
 Please update / add / remove as needed.
 */
 
-type DiscoveryType string
-
-const (
-	AllDiscoveryTypes                     DiscoveryType = "all"
-	MonitorDiscoveryType                  DiscoveryType = "monitor"
-	VirtualServerDiscoveryType            DiscoveryType = "virtualServer"
-	inactiveClientSslProfileDiscoveryType DiscoveryType = "clientSsl"
-	inactiveServerSslProfileDiscoveryType DiscoveryType = "serverSsl"
-)
-
-type PartitionNames []string
-
 type Connection struct {
 	HostnameOrAddress string `json:"hostnameOrAddress"`
 	Username          string `json:"username"`
 	Password          string `json:"password"`
 	Port              int    `json:"port"`
-}
-
-type sslProfileType string
-
-const (
-	ClientSSLProfile = sslProfileType("client")
-	ServerSSLProfile = sslProfileType("server")
-)
-
-type SSLProfile struct {
-	Name      string         `json:"name"`
-	Type      sslProfileType `json:"type"`
-	Partition string         `json:"partition"`
 }
 
 type CertificateBundle struct {
@@ -50,48 +25,9 @@ type Keystore struct {
 }
 
 type Binding struct {
-	SSLProfile     string         `json:"sslProfile"`
-	ParentProfile  string         `json:"parentProfile"`
-	SSLProfileType sslProfileType `json:"sslProfileType"`
-	ServerName     string         `json:"serverName"`
-}
-
-type DiscoverCertificatesRequest struct {
-	Configuration DiscoverCertificatesConfiguration `json:"discovery"`
-	Connection    Connection                        `json:"connection"`
-	Control       DiscoveryControl                  `json:"discoveryControl"`
-	Page          DiscoveryPage                     `json:"discoveryPage"`
-}
-
-type DiscoveryControl struct {
-	MaxResults int `json:"maxResults"`
-}
-
-type DiscoverCertificatesConfiguration struct {
-	ExcludeExpiredCertificates bool          `json:"excludeExpiredCertificates"`
-	ExcludeInactiveProfiles    bool          `json:"excludeInactiveProfiles"`
-	Partition                  string        `json:"partition"`
-	TimeStamp                  string        `json:"timeStamp"`
-	Type                       DiscoveryType `json:"discoveryType"`
-
-	partitions PartitionNames
-}
-
-type DiscoveryPage struct {
-	Type      DiscoveryType `json:"discoveryType"`
-	Paginator string        `json:"paginator"`
-}
-
-type DiscoverCertificatesResponse struct {
-	Page     *DiscoveryPage           `json:"discoveryPage"`
-	Messages []*DiscoveredCertificate `json:"messages"`
-}
-
-type DiscoveredCertificate struct {
-	Certificate       string                     `json:"certificate"`
-	CertificateChain  []string                   `json:"certificateChain"`
-	Installations     []*CertificateInstallation `json:"installations"`
-	MachineIdentities []*MachineIdentity         `json:"machineIdentities"`
+	SSLProfile    string `json:"sslProfile"`
+	ParentProfile string `json:"parentProfile"`
+	ServerName    string `json:"serverName"`
 }
 
 type CertificateInstallation struct {

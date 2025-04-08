@@ -32,7 +32,7 @@ func main() {
 	zap.ReplaceGlobals(l)
 
 	//Replace log statement with connector getting built.
-	l.Info("Sample Connector Starting")
+	l.Info("Ansible Push Connector Starting")
 
 	e := echo.New()
 
@@ -64,12 +64,6 @@ func main() {
 				and configures it to a specific endpoint provided in previous request.
 	*/
 	g.POST("/configureinstallationendpoint", handleConfigureInstallationEndpoint)
-
-	/*
-		The discovercertificates API takes the remote host connection information and discovery preferences to
-		retrieve all relevant certificates from the host.
-	*/
-	g.POST("/discovercertificates", handleDiscoverCertificates)
 
 	//Do not change the port for the service. It has to run on port 8080.
 	if err := e.Start(":8080"); err != nil {

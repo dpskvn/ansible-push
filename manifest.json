@@ -4,11 +4,56 @@
   "pluginType": "MACHINE",
   "domainSchema": {
     "connection": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "credentialType": {
+                "const": "local"
+              }
+            },
+            "required": ["credentialType"]
+          },
+          "then": {
+            "required": ["credentialType", "username", "password"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "credentialType": {
+                "const": "shared"
+              }
+            },
+            "required": ["credentialType"]
+          },
+          "then": {
+            "required": ["credentialType", "credentialId"]
+          }
+        }
+      ],
       "properties": {
         "aapUrl": {
           "type": "string",
           "x-labelLocalizationKey": "address.label",
           "x-rank": 0
+        },
+        "credentialType": {
+          "default": "local",
+          "description": "credentialType.description",
+          "oneOf": [
+            {
+              "const": "local",
+              "title": "credentialType.local"
+            },
+            {
+              "const": "shared",
+              "title": "credentialType.shared"
+            }
+          ],
+          "x-featureKey": "credential_manager_cyberark",
+          "x-labelLocalizationKey": "credentialType.label",
+          "x-rank": 1
         },
         "connectionType": {
           "oneOf": [
@@ -22,13 +67,13 @@
             }
           ],
           "x-labelLocalizationKey": "connectionType.label",
-          "x-rank": 1
+          "x-rank": 2
         },
         "username": {
           "type": "string",
           "x-encrypted": true,
           "x-labelLocalizationKey": "username.label",
-          "x-rank": 2
+          "x-rank": 4
         },
         "password": {
           "type": "string",
@@ -39,10 +84,23 @@
           },
           "x-encrypted": true,
           "x-labelLocalizationKey": "password.label",
-          "x-rank": 3
+          "x-rank": 5
+        },
+        "credentialId": {
+          "type": "string",
+          "x-rank": 3,
+          "x-credential": {
+            "authType": "username_password",
+            "value": "#/properties/credentialId",
+            "mapping": {
+              "username": "#/username",
+              "password": "#/password"
+            }
+          },
+          "x-labelLocalizationKey": "credentialId.label"
         }
       },
-      "required": ["aapUrl", "connectionType", "username", "password"],
+      "required": ["aapUrl", "connectionType", "credentialType"],
       "type": "object"
     },
     "certificateBundle": {
@@ -118,6 +176,16 @@
         "label": "Password",
         "showPassword": "Show Password",
         "hidePassword": "Hide Password"
+      },
+      "credentialId": {
+        "description": "Credentials need to be enabled or created, or you must have access to existing credentials.",
+        "label": "Credential"
+      },
+      "credentialType": {
+        "description": "Credential types require additional licensing.",
+        "label": "Credential Type",
+        "local": "Enter Credentials",
+        "shared": "Select Credentials"
       },
       "keystore": {
         "label": "Certificate Information"

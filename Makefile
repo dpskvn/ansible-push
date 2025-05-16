@@ -1,4 +1,4 @@
-SHORTNAME				:= sample-connector
+SHORTNAME				:= ansible-push
 IMAGE_NAME				 = tls-protect-${SHORTNAME}
 IMAGE_TAG				:= latest
 BUILDX_BUILDER_NAME    	?= default

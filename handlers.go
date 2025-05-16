@@ -95,20 +95,6 @@ func handleConfigureInstallationEndpoint(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func handleDiscoverCertificates(c echo.Context) error {
-	req := DiscoverCertificatesRequest{}
-	if err := c.Bind(&req); err != nil {
-		zap.L().Error("invalid request, failed to unmarshall json", zap.Error(err))
-		return c.String(http.StatusBadRequest, fmt.Sprintf("failed to unmarshall json: %s", err.Error()))
-	}
-
-	res := DiscoverCertificatesResponse{
-		Messages: []*DiscoveredCertificate{},
-	}
-
-	return c.JSON(http.StatusOK, &res)
-}
-
 func launchAAPJob(payload CertificateBundlePayload) (int, error) {
 	// Join the certificate chain array into a single string with pipe separators
 	// AAP endpoint only supports string type for extra vars, not array
